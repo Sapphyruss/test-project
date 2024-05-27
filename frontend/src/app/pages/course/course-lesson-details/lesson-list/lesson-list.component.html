@@ -1,0 +1,63 @@
+<div class="accordion content__cirriculum__wrap" id="accordionExample">
+
+  @for (lesson of lessons; track lesson.id) {
+    <div class="accordion-item">
+      <h2 class="accordion-header" [attr.id]="'heading' + lesson.id">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+        [attr.data-bs-target]="'#collapse'+ lesson.id"
+        [attr.aria-controls]="'collapse' + lesson.id"
+        [attr.aria-labelledby]="'heading' + lesson.id"
+        aria-expanded="true" >
+          {{lesson.title}}
+        </button>
+      </h2>
+      <div class="accordion-collapse collapse show"
+      [attr.id]="'collapse'+ lesson.id"
+      [attr.aria-labelledby]="'heading' + lesson.id"
+        data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <div class="scc__wrap">
+            <div class="scc__info">
+              <i class="icofont-video-alt"></i>
+              <h5> <a href="javascript:void(0)"><span>{{lesson.title}}</span></a></h5>
+            </div>
+            <div class="scc__meta">
+              <strong>3.27</strong>
+              <a href="javascript:void(0)"><span class="question"><i class="icofont-eye"></i>
+                  Preview</span></a>
+            </div>
+          </div>
+          <div class="scc__wrap">
+            <div class="scc__info">
+              <i class="icofont-video-alt"></i>
+              <h5> <a href="javascript:void(0)"><span>Course Outline</span></a></h5>
+            </div>
+            <div class="scc__meta">
+              <strong>5.00</strong>
+              <a href="javascript:void(0)"><span class="question"><i class="icofont-eye"></i>
+                  Preview</span></a>
+            </div>
+          </div>
+          <div class="scc__wrap">
+            <div class="scc__info">
+              <i class="icofont-file-text"></i>
+              <h5> <a href="javascript:void(0)"><span>Course Materials</span></a>
+              </h5>
+            </div>
+          </div>
+          <div class="scc__wrap">
+            <div class="scc__info">
+              <i class="icofont-audio"></i>
+              <h5> <a href="javascript:void(0)"><span>Summer Quiz</span></a></h5>
+            </div>
+          </div>
+          <div class="scc__wrap">
+            <div class="scc__info">
+              <i class="icofont-file-text"></i>
+              <h5><a href="javascript:void(0)"><span>Assignment</span></a></h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }

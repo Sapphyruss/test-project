@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leçons</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+        }
+        .left-panel {
+            width: 30%;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        .right-panel {
+            width: 70%;
+            padding: 20px;
+        }
+        .accordion {
+            background-color: #f1f1f1;
+            color: #444;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            transition: 0.4s;
+        }
+        .active, .accordion:hover {
+            background-color: #ccc;
+        }
+        .panel {
+            padding: 0 18px;
+            display: none;
+            background-color: white;
+            overflow: hidden;
+        }
+        .lesson-content {
+            padding: 15px 0;
+        }
+        .lesson-content a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+        .lesson-content a:hover {
+            text-decoration: underline;
+        }
+        .video-content {
+            background-color: #f1f1f1;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .video-content h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="left-panel">
+    <h2>Lessons</h2>
+
+    <button class="accordion">Lesson #01</button>
+    <div class="panel">
+        <div class="lesson-content">
+            <a href="#">Course Intro - 3.27 min</a><br>
+            <a href="#">Course Outline - 5.00 min</a><br>
+            <a href="#">Course Outline - 7.00 min</a>
+        </div>
+    </div>
+
+    <button class="accordion">Lesson #02</button>
+    <div class="panel">
+        <div class="lesson-content">
+            <a href="#">Course Intro - 3.27 min</a><br>
+            <a href="#">Course Outline - 5.00 min</a><br>
+            <a href="#">Course Outline - 7.00 min</a><br>
+            <a href="#">Course Materials</a><br>
+            <a href="#">Summer Quiz</a><br>
+            <a href="#">Assignment</a>
+        </div>
+    </div>
+
+    <button class="accordion">Leçon #03</button>
+    <div class="panel">
+        <div class="lesson-content">
+            <a href="#">Course Intro - 3.27 min</a><br>
+            <a href="#">Course Outline - 5.00 min</a><br>
+            <a href="#">Course Outline - 7.00 min</a>
+        </div>
+    </div>
+
+    <button class="accordion">Leçon #04</button>
+    <div class="panel">
+        <div class="lesson-content">
+            <a href="#">Course Intro - 3.27 min</a><br>
+            <a href="#">Course Outline - 5.00 min</a><br>
+            <a href="#">Course Outline - 7.00 min</a>
+        </div>
+    </div>
+</div>
+
+<div class="right-panel">
+    <div class="video-content">
+        <h2>Video Content Lesson 01</h2>
+        <img src="https://img.youtube.com/vi/your-video-id/hqdefault.jpg" alt="Self-Intro Video" style="width:100%; border-radius: 10px;">
+        <p>Watch on <a href="https://www.youtube.com/watch?videoID" target="_blank">YouTube</a></p>
+    </div>
+</div>
+
+<script>
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+            } else {
+                panel.style.display = "block";
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

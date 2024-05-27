@@ -1,0 +1,14 @@
+<!-- When user is admin -->
+@if (isAdmin) {
+  <app-admin-stats></app-admin-stats>
+}
+
+<!-- When user is instructor -->
+@if (isInstructor) {
+  <app-instructor-stats></app-instructor-stats>
+}
+
+<!-- When user is student -->
+@if (isStudent) {
+  <app-student-stats></app-student-stats>
+}

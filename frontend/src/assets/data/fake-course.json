@@ -1,0 +1,432 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "title": "Foundation tech with ALX Africa about software",
+      "category": {
+        "id": 1,
+        "name": "Technology",
+        "description": "Basic foundation of technology and software development.",
+        "createdAt": "2023-03-09T16:26:27.000Z",
+        "updatedAt": "2024-03-09T16:26:27.000Z"
+      },
+      "lessons": [
+        {
+          "id": 1,
+          "title": "Lesson #01",
+          "contents": [
+            "Course Intro - 3.27 min",
+            "Course Outline - 5.00 min",
+            "Course Outline - 7.00 min"
+          ],
+          "material": "Lesson #01 Materials",
+          "summerQuiz": "Summer Quiz"
+        },
+        {
+          "id": 2,
+          "title": "Lesson #02",
+          "contents": [
+            "Course Intro - 3.27 min",
+            "Course Outline - 5.00 min",
+            "Course Outline - 7.00 min",
+            "Course Materials",
+            "Summer Quiz",
+            "Assignment"
+          ],
+          "material": "Lesson #02 Materials",
+          "summerQuiz": "Summer Quiz"
+        }
+      ],
+      "material": "Course Materials",
+      "summerQuiz": "Final Quiz"
+    },
+    {
+      "id": 2,
+      "title": "Advanced Programming Techniques",
+      "category": {
+        "id": 1,
+        "name": "Programming",
+        "description": "Data Science Essentials",
+        "createdAt": "2023-03-09T16:26:27.000Z",
+        "updatedAt": "2024-03-09T16:26:27.000Z"
+      },
+      "lessons": [
+        {
+          "id": 1,
+          "title": "Lesson #01",
+          "contents": [
+            "Introduction to Advanced Programming - 4.15 min",
+            "Advanced Data Structures - 6.00 min",
+            "Algorithms - 8.30 min"
+          ],
+          "material": "Lesson #01 Materials",
+          "summerQuiz": "Advanced Quiz"
+        }
+      ],
+      "material": "Course Materials",
+      "summerQuiz": "Final Quiz"
+    },
+    {
+      "id": 3,
+      "title": "Data Science Essentials",
+      "category": {
+        "id": 1,
+        "name": "Data Science",
+        "description": "Data Science Essentials",
+        "createdAt": "2023-03-09T16:26:27.000Z",
+        "updatedAt": "2024-03-09T16:26:27.000Z"
+      },
+      "lessons": [
+        {
+          "id": 1,
+          "title": "Lesson #01",
+          "contents": [
+            "Introduction to Data Science - 4.30 min",
+            "Data Cleaning - 5.00 min",
+            "Exploratory Data Analysis - 6.15 min"
+          ],
+          "material": "Lesson #01 Materials",
+          "summerQuiz": "Data Science Quiz"
+        },
+        {
+          "id": 2,
+          "title": "Lesson #02",
+          "contents": [
+            "Machine Learning Basics - 5.50 min",
+            "Supervised Learning - 7.30 min",
+            "Unsupervised Learning - 8.00 min"
+          ],
+          "material": "Lesson #02 Materials",
+          "summerQuiz": "Data Science Quiz"
+        }
+      ],
+      "material": "Course Materials",
+      "summerQuiz": "Final Quiz"
+    },
+    {
+      "id": 4,
+      "title": "Web Development Bootcamp",
+      "category": {
+        "id": 1,
+        "name": "Web Development",
+        "description": "Data Science Essentials",
+        "createdAt": "2023-03-09T16:26:27.000Z",
+        "updatedAt": "2024-03-09T16:26:27.000Z"
+      },
+      "lessons": [
+        {
+          "id": 1,
+          "title": "Lesson #01",
+          "contents": [
+            "HTML Basics - 3.00 min",
+            "CSS Fundamentals - 4.30 min",
+            "JavaScript Introduction - 5.45 min"
+          ],
+          "material": "Lesson #01 Materials",
+          "summerQuiz": "Web Dev Quiz"
+        },
+        {
+          "id": 2,
+          "title": "Lesson #02",
+          "contents": [
+            "Advanced JavaScript - 6.20 min",
+            "React Basics - 7.00 min",
+            "Backend Development - 8.45 min"
+          ],
+          "material": "Lesson #02 Materials",
+          "summerQuiz": "Web Dev Quiz"
+        },
+        {
+          "id": 2,
+          "title": "Lesson #02",
+          "contents": [
+            "AWS Basics - 5.50 min",
+            "Azure Basics - 6.40 min",
+            "GCP Basics - 7.15 min"
+          ],
+          "material": "Lesson #02 Materials",
+          "summerQuiz": "Cloud Quiz"
+        },
+        {
+          "id": 2,
+          "title": "Lesson #02",
+          "contents": [
+            "AWS Basics - 5.50 min",
+            "Azure Basics - 6.40 min",
+            "GCP Basics - 7.15 min"
+          ],
+          "material": "Lesson #02 Materials",
+          "summerQuiz": "Cloud Quiz"
+        }
+      ],
+      "material": "Course Materials",
+      "summerQuiz": "Final Quiz"
+    },
+    {
+      "id": 5,
+      "title": "Cloud Computing Fundamentals",
+      "category": {
+        "id": 1,
+        "name": "Cloud Computing",
+        "description": "Data Science Essentials",
+        "createdAt": "2023-03-09T16:26:27.000Z",
+        "updatedAt": "2024-03-09T16:26:27.000Z"
+      },
+      "lessons": [
+        {
+          "id": 1,
+          "title": "Lesson #01",
+          "contents": [
+            "Introduction to Cloud - 4.00 min",
+            "Cloud Service Models - 5.20 min",
+            "Cloud Deployment Models - 6.30 min"
+          ],
+          "material": "Lesson #01 Materials",
+          "summerQuiz": "Cloud Quiz"
+        },
+        {
+          "id": 2,
+          "title": "Lesson #02",
+          "contents": [
+            "AWS Basics - 5.50 min",
+            "Azure Basics - 6.40 min",
+            "GCP Basics - 7.15 min"
+          ],
+          "material": "Lesson #02 Materials",
+          "summerQuiz": "Cloud Quiz"
+        },
+        {
+          "id": 3,
+          "title": "Lesson #02",
+          "contents": [
+            "AWS Basics - 5.50 min",
+            "Azure Basics - 6.40 min",
+            "GCP Basics - 7.15 min"
+          ],
+          "material": "Lesson #02 Materials",
+          "summerQuiz": "Cloud Quiz"
+        },
+        {
+          "id": 4,
+          "title": "Lesson #02",
+          "contents": [
+            "AWS Basics - 5.50 min",
+            "Azure Basics - 6.40 min",
+            "GCP Basics - 7.15 min"
+          ],
+          "material": "Lesson #02 Materials",
+          "summerQuiz": "Cloud Quiz"
+        },
+        {
+          "id": 5,
+          "title": "Lesson #02",
+          "contents": [
+            "AWS Basics - 5.50 min",
+            "Azure Basics - 6.40 min",
+            "GCP Basics - 7.15 min"
+          ],
+          "material": "Lesson #02 Materials",
+          "summerQuiz": "Cloud Quiz"
+        }
+      ],
+      "material": "Course Materials",
+      "summerQuiz": "Final Quiz"
+    },
+    {
+      "id": 6,
+      "title": "Cybersecurity Essentials",
+      "category": {
+        "id": 1,
+        "name": "Security",
+        "description": "Data Science Essentials",
+        "createdAt": "2023-03-09T16:26:27.000Z",
+        "updatedAt": "2024-03-09T16:26:27.000Z"
+      },
+      "lessons": [
+        {
+          "id": 1,
+          "title": "Lesson #01",
+          "contents": [
+            "Introduction to Cybersecurity - 4.10 min",
+            "Network Security - 5.30 min",
+            "Application Security - 6.50 min"
+          ],
+          "material": "Lesson #01 Materials",
+          "summerQuiz": "Cybersecurity Quiz"
+        },
+        {
+          "id": 2,
+          "title": "Lesson #02",
+          "contents": [
+            "Threats and Vulnerabilities - 5.40 min",
+            "Security Best Practices - 6.20 min",
+            "Incident Response - 7.10 min"
+          ],
+          "material": "Lesson #02 Materials",
+          "summerQuiz": "Cybersecurity Quiz"
+        },
+        {
+          "id": 3,
+          "title": "Lesson #02",
+          "contents": [
+            "AWS Basics - 5.50 min",
+            "Azure Basics - 6.40 min",
+            "GCP Basics - 7.15 min"
+          ],
+          "material": "Lesson #02 Materials",
+          "summerQuiz": "Cloud Quiz"
+        }
+      ],
+      "material": "Course Materials",
+      "summerQuiz": "Final Quiz"
+    },
+    {
+      "id": 7,
+      "title": "Machine Learning Mastery",
+      "category": {
+        "id": 6,
+        "name": "Artificial Intelligence",
+        "description": "Comprehensive course on machine learning and AI.",
+        "createdAt": "2023-08-14T11:30:00.000Z",
+        "updatedAt": "2024-08-14T11:30:00.000Z"
+      },
+      "lessons": [
+        {
+          "id": 1,
+          "title": "Lesson #01",
+          "contents": [
+            "Introduction to Machine Learning - 4.00 min",
+            "Supervised Learning - 6.00 min",
+            "Unsupervised Learning - 7.30 min"
+          ],
+          "material": "Lesson #01 Materials",
+          "summerQuiz": "ML Quiz"
+        },
+        {
+          "id": 2,
+          "title": "Lesson #02",
+          "contents": [
+            "Neural Networks - 5.45 min",
+            "Deep Learning - 8.00 min",
+            "Reinforcement Learning - 9.30 min"
+          ],
+          "material": "Lesson #02 Materials",
+          "summerQuiz": "ML Quiz"
+        }
+      ],
+      "material": "Course Materials",
+      "summerQuiz": "Final Quiz"
+    },
+    {
+      "id": 8,
+      "title": "Blockchain Fundamentals",
+      "category": {
+        "id": 7,
+        "name": "Blockchain",
+        "description": "Fundamental concepts of blockchain technology.",
+        "createdAt": "2023-09-15T12:45:00.000Z",
+        "updatedAt": "2024-09-15T12:45:00.000Z"
+      },
+      "lessons": [
+        {
+          "id": 1,
+          "title": "Lesson #01",
+          "contents": [
+            "Introduction to Blockchain - 4.30 min",
+            "Cryptography Basics - 5.15 min",
+            "Distributed Ledger - 6.50 min"
+          ],
+          "material": "Lesson #01 Materials",
+          "summerQuiz": "Blockchain Quiz"
+        },
+        {
+          "id": 2,
+          "title": "Lesson #02",
+          "contents": [
+            "Smart Contracts - 5.40 min",
+            "Decentralized Applications - 7.00 min",
+            "Blockchain Platforms - 8.30 min"
+          ],
+          "material": "Lesson #02 Materials",
+          "summerQuiz": "Blockchain Quiz"
+        }
+      ],
+      "material": "Course Materials",
+      "summerQuiz": "Final Quiz"
+    },
+    {
+      "id": 9,
+      "title": "IoT Basics",
+      "category": {
+        "id": 8,
+        "name": "Internet of Things",
+        "description": "Introduction to IoT and its applications.",
+        "createdAt": "2023-10-16T14:10:00.000Z",
+        "updatedAt": "2024-10-16T14:10:00.000Z"
+      },
+      "lessons": [
+        {
+          "id": 1,
+          "title": "Lesson #01",
+          "contents": [
+            "Introduction to IoT - 3.45 min",
+            "IoT Architecture - 5.20 min",
+            "IoT Devices - 6.15 min"
+          ],
+          "material": "Lesson #01 Materials",
+          "summerQuiz": "IoT Quiz"
+        },
+        {
+          "id": 2,
+          "title": "Lesson #02",
+          "contents": [
+            "IoT Communication Protocols - 5.50 min",
+            "IoT Security - 7.10 min",
+            "IoT Platforms - 8.00 min"
+          ],
+          "material": "Lesson #02 Materials",
+          "summerQuiz": "IoT Quiz"
+        }
+      ],
+      "material": "Course Materials",
+      "summerQuiz": "Final Quiz"
+    },
+    {
+      "id": 10,
+      "title": "DevOps Practices",
+      "category": {
+        "id": 9,
+        "name": "DevOps",
+        "description": "Key practices and tools in DevOps.",
+        "createdAt": "2023-11-17T15:35:00.000Z",
+        "updatedAt": "2024-11-17T15:35:00.000Z"
+      },
+      "lessons": [
+        {
+          "id": 1,
+          "title": "Lesson #01",
+          "contents": [
+            "Introduction to DevOps - 4.20 min",
+            "CI/CD Pipelines - 5.30 min",
+            "Infrastructure as Code - 6.45 min"
+          ],
+          "material": "Lesson #01 Materials",
+          "summerQuiz": "DevOps Quiz"
+        },
+        {
+          "id": 2,
+          "title": "Lesson #02",
+          "contents": [
+            "Monitoring and Logging - 5.40 min",
+            "Containerization - 7.00 min",
+            "Orchestration - 8.30 min"
+          ],
+          "material": "Lesson #02 Materials",
+          "summerQuiz": "DevOps Quiz"
+        }
+      ],
+      "material": "Course Materials",
+      "summerQuiz": "Final Quiz"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+<div class="container-fluid full__width__padding">
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="dashboardarea__wraper">
+        <div class="dashboardarea__img">
+          <div class="dashboardarea__inner admin__dashboard__inner">
+            <div class="dashboardarea__left">
+              <div class="dashboardarea__left__img">
+                <img loading="lazy" [src]="userImageUrl" [alt]="userName">
+              </div>
+              <div class="dashboardarea__left__content">
+                <h5>Hello</h5>
+                <h4>{{ userName }}</h4>
+              </div>
+            </div>
+            <div class="dashboardarea__star">
+              <i class="icofont-star" *ngFor="let star of [].constructor(starRating)"></i>
+              <i class="icofont-star" *ngFor="let star of [].constructor(5 - starRating)"></i>
+              <span>{{ starRating }} ({{ reviewsCount }} Reviews)</span>
+            </div>
+            <div class="dashboardarea__right">
+              @if (isInstructor) {
+                <div class="dashboardarea__right__button">
+                  <a class="default__button" [attr.href]="staticRoutes.COURSES_NEW">Create a New Course
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      class="feather feather-arrow-right">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </a>
+                </div>
+              }  
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "title": "Lesson #01",
+      "contents": [
+        "Course Intro - 9.27 min",
+        "Course Outline - 4.00 min",
+        "Course Outline - 5.00 min"
+      ],
+      "material": "Lesson #01",
+      "summerQuiz": "Summer Quiz"
+    },
+    {
+      "id": 2,
+      "title": "Lesson #02",
+      "contents": [
+        "Course Intro - 4.27 min",
+        "Course Outline - 6.00 min",
+        "Course Outline - 17.00 min",
+        "Course Materials",
+        "Summer Quiz",
+        "Assignment"
+      ],
+      "material": "Lesson #02",
+      "summerQuiz": "Summer Quiz"
+    }
+  ]
+}

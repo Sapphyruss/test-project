@@ -1,0 +1,54 @@
+<!-- dashboardarea__area__start  -->
+<div class="dashboardarea sp_bottom_100">
+  <!-- dashboardarea__ header__area -->
+  <app-dash-header></app-dash-header>
+  <!-- End dashboardarea__ header__area -->
+
+  <!-- Nav area -->
+  <div class="dashboard">
+    <div class="container-fluid full__width__padding">
+      <div class="row">
+        <div class="col-xl-3 col-lg-3 col-md-12">
+          <div class="dashboard__inner sticky-top">
+            <div class="dashboard__nav__title">
+              <h6>Welcome, Alain Gouba</h6>
+            </div>
+            <!-- Dash nav area -->
+            <app-dash-nav></app-dash-nav>
+            <!-- End Dash nav area -->
+          </div>
+        </div>
+
+        <div class="col-xl-9 col-lg-9 col-md-12">
+          <div class="dashboard__content__wraper">
+            <!-- Outlet__  area -->
+            <router-outlet />
+            <!-- End Outlet__ area -->
+
+            @if (charts) {
+            <!-- Chats area -->
+            <app-dash-charts></app-dash-charts>
+            <!-- End Chats area -->
+            }
+
+            @if (isAdmin) {
+            <div class="row">
+              <!-- popular instructor area -->
+              <div class="col-xl-6 col-lg-12 col-md-12 col-12">
+                <app-dash-popular-instructor></app-dash-popular-instructor>
+              </div>
+              <!-- End popular instructor area -->
+
+              <!-- recent course -->
+              <div class="col-xl-6 col-lg-12 col-md-12 col-12">
+                <app-dash-recent-course></app-dash-recent-course>
+              </div>
+              <!-- End recent course -->
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Dashboard Layout -->

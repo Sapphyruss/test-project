@@ -1,0 +1,22 @@
+.right-panel {
+  width: 100%;
+}
+
+.video-content {
+  background-color: #f1f1f1;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.video-content h2 {
+  margin-top: 0;
+}
+
+.close-btn {
+  float: right;
+  background: var(--primaryColor);
+
+  a {
+    color: white !important;
+  }
+}
