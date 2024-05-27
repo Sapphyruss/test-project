@@ -3,11 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://learnxcel_user:your_password@localhost:3306/learnxcel'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://learnxcel_user:pwd@localhost:3306/learnxcel'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-# Define the models
+# Models
 class User(db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
@@ -143,6 +143,7 @@ def test_db_connection():
     except Exception as e:
         return jsonify({'error': 'Database connection error', 'details': str(e)}), 500
 
+# errors
 @app.errorhandler(404)
 def not_found_error(error):
     return jsonify({'error': 'Not found'}), 404
