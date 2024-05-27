@@ -156,7 +156,7 @@ def internal_server_error(error):
     return jsonify({'error': 'Internal server error'}), 500
 
 if __name__ == "__main__":
-    # Initialize database
+    # Initialize a database
     with app.app_context():
         db.create_all()
     app.run(debug=True)
