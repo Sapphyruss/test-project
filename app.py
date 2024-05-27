@@ -41,6 +41,10 @@ class Instructor(db.Model):
         return f'<Instructor {self.name}>'
 
 # Routes
+@app.route('/')
+def home():
+    return "Welcome to LearnXcel!"
+
 @app.route('/users', methods=['GET'])
 def get_users():
     users = User.query.all()
