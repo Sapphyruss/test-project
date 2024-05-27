@@ -7,7 +7,7 @@ class TestApp(unittest.TestCase):
     # Set up and tear down methods to create and destroy the database
     def setUp(self):
         app.config['TESTING'] = True
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'learnxcel:///:memory:'
         self.app = app.test_client()
         db.create_all()
 
