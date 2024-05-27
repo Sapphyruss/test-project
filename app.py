@@ -7,38 +7,72 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://learnxcel_user:p
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+# Enums
+class UsersRoleEnum(Enum):
+    admin = 'admin'
+    instructor = 'instructor'
+    student = 'student'
+
+class QuestionsQuestionTypeEnum(Enum):
+    multiple_choice = 'multiple_choice'
+    true_false = 'true_false'
+    short_answer = 'short_answer'
+    
 # Models
 class User(db.Model):
-    __tablename__ = 'User'
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), nullable=False)
-    email = db.Column(db.String(100), nullable=False, unique=True)
-    password = db.Column(db.String(100), nullable=False)
-    is_admin = db.Column(db.Boolean, default=False)
-
-    def __repr__(self):
-        return f'<User {self.username}>'
+    user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    first_name = db.Column(db.String(50))
+    last_name = db.Column(db.String(50))
+    role = db.Column(db.Enum(UsersRoleEnum), nullable=False)
+    registration_date = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False)
 
 class Course(db.Model):
-    __tablename__ = 'Course'
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(255), nullable=False)
-    description = db.Column(db.Text, nullable=True)
-    instructor_id = db.Column(db.Integer, db.ForeignKey('Instructor.id'), nullable=False)
-    instructor = db.relationship('Instructor', back_populates='courses')
+    course_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    course_name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.TEXT)
+    instructor_id = db.Column(db.Integer, db.ForeignKey('instructor.instructor_id'))
+    creation_date = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False)
+    instructor = relationship('Instructor', back_populates='courses')
 
-    def __repr__(self):
-        return f'<Course {self.title}>'
+class Lesson(db.Model):
+    lesson_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'))
+    lesson_name = db.Column(db.String(100), nullable=False)
+    content = db.Column(db.TEXT)
+    order_index = db.Column(db.Integer)
+    creation_date = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False)
 
-class Instructor(db.Model):
-    __tablename__ = 'Instructor'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(100), nullable=False, unique=True)
-    courses = db.relationship('Course', back_populates='instructor')
+class Quiz(db.Model):
+    quiz_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    lesson_id = db.Column(db.Integer, db.ForeignKey('lesson.lesson_id'))
+    quiz_name = db.Column(db.String(100), nullable=False)
+    creation_date = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False)
 
-    def __repr__(self):
-        return f'<Instructor {self.name}>'
+class Question(db.Model):
+    question_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    quiz_id = db.Column(db.Integer, db.ForeignKey('quiz.quiz_id'))
+    question_text = db.Column(db.TEXT, nullable=False)
+    question_type = db.Column(db.Enum(QuestionsQuestionTypeEnum), nullable=False)
+    creation_date = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False)
+
+class Option(db.Model):
+    option_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    question_id = db.Column(db.Integer, db.ForeignKey('question.question_id'))
+    option_text = db.Column(db.String(255), nullable=False)
+    is_correct = db.Column(db.Boolean, nullable=False, default=False)
+
+class UserProgress(db.Model):
+    progress_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+    course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'))
+    lesson_id = db.Column(db.Integer, db.ForeignKey('lesson.lesson_id'))
+    quiz_id = db.Column(db.Integer, db.ForeignKey('quiz.quiz_id'))
+    score = db.Column(db.DECIMAL(5, 2))
+    completed = db.Column(db.Boolean, nullable=False, default=False)
+    completion_date = db.Column(db.TIMESTAMP)
 
 # Routes
 @app.route('/')
@@ -160,4 +194,3 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
     app.run(debug=True)
-
