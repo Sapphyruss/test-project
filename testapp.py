@@ -17,7 +17,7 @@ class TestApp(unittest.TestCase):
 
     # Helper method to create a user
     def create_user(self, username, email, password, is_admin=False):
-        user = User(username=username, email=email, password=password, is_admin=is_admin)
+        user = User(username=username, email=email, password=password)
         db.session.add(user)
         db.session.commit()
         return user
