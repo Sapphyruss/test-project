@@ -9,7 +9,7 @@ db = SQLAlchemy(app)
 
 # Models
 class User(db.Model):
-    __tablename__ = 'user'
+    __tablename__ = 'User'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
@@ -134,7 +134,6 @@ def create_course():
 @app.route('/test_db_connection', methods=['GET'])
 def test_db_connection():
     try:
-        # Try to query a record from the User table
         user = User.query.first()
         if user:
             return jsonify({'message': 'Database connection successful'})
@@ -143,7 +142,7 @@ def test_db_connection():
     except Exception as e:
         return jsonify({'error': 'Database connection error', 'details': str(e)}), 500
 
-# errors
+# Error Handlers
 @app.errorhandler(404)
 def not_found_error(error):
     return jsonify({'error': 'Not found'}), 404
@@ -153,5 +152,8 @@ def internal_server_error(error):
     return jsonify({'error': 'Internal server error'}), 500
 
 if __name__ == "__main__":
+    # Initialize database
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
 
