@@ -2,7 +2,8 @@ from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 from sqlalchemy import Enum
-from datetime import datetime
+from datetime import datetime, timedelta
+import jwt
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://learnxcel_user:pwd@localhost:3306/learnxcel'
@@ -182,6 +183,54 @@ def test_db_connection():
     except Exception as e:
         return jsonify({'error': 'Database connection error', 'details': str(e)}), 500
 
+# User Authentication
+@app.route('/register', methods=['POST'])
+def register_user():
+    data = request.json
+    username = data.get('username')
+    password = data.get('password')
+    email = data.get('email')
+
+    # Invalid input
+    if not all([username, password, email]):
+        return jsonify({'error': 'Missing fields'}), 400
+
+    # Username or email already exists
+    if User.query.filter_by(username=username).first():
+        return jsonify({'error': 'Username already exists'}), 409
+    if User.query.filter_by(email=email).first():
+        return jsonify({'error': 'Email already exists'}), 409
+
+    # Create new user
+    user = User(username=username, password=password, email=email)
+    db.session.add(user)
+    db.session.commit()
+    return jsonify({'message': 'User registered successfully'}), 201
+
+@app.route('/login', methods=['POST'])
+def login_user():
+    data = request.json
+    username = data.get('username')
+    password = data.get('password')
+
+    # Invalid input
+    if not all([username, password]):
+        return jsonify({'error': 'Missing fields'}), 400
+
+    # Check if user exists
+    user = User.query.filter_by(username=username).first()
+    if not user:
+        return jsonify({'error': 'Invalid username or password'}), 401
+
+    # Check password
+    if not user.check_password(password):
+        return jsonify({'error': 'Invalid username or password'}), 401
+
+    # Create JWT token
+    token = jwt.encode({'username': username, 'exp': datetime.utcnow() + timedelta(days=1)}, app.config['SECRET_KEY'])
+
+    return jsonify({'token': token.decode('UTF-8')}), 200
+    
 # Error Handlers
 @app.errorhandler(404)
 def not_found_error(error):
