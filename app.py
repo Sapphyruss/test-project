@@ -29,7 +29,6 @@ class User(db.Model):
     email = db.Column(db.String(100), unique=True, nullable=False)
     first_name = db.Column(db.String(50))
     last_name = db.Column(db.String(50))
-    role = db.Column(db.Enum(UsersRoleEnum), nullable=False)
     registration_date = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False)
 
 class Course(db.Model):
