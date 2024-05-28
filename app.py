@@ -1,26 +1,29 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
-from sqlalchemy import Enum
+from sqlalchemy import Enum as SQLAEnum, ForeignKey, exc
 from datetime import datetime, timedelta
 import jwt
+import enum
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://learnxcel_user:pwd@localhost:3306/learnxcel'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:password123@localhost/learnxcel'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = '6e3fa2a3753c66e433ca479ccae1f4af'
 db = SQLAlchemy(app)
 
 # Enums
-class UsersRoleEnum(Enum):
+class UsersRoleEnum(str, enum.Enum):
     admin = 'admin'
     instructor = 'instructor'
     student = 'student'
 
-class QuestionsQuestionTypeEnum(Enum):
+class QuestionsQuestionTypeEnum(str, enum.Enum):
     multiple_choice = 'multiple_choice'
     true_false = 'true_false'
     short_answer = 'short_answer'
-    
+
 # Models
 class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -29,19 +32,26 @@ class User(db.Model):
     email = db.Column(db.String(100), unique=True, nullable=False)
     first_name = db.Column(db.String(50))
     last_name = db.Column(db.String(50))
+    role = db.Column(SQLAEnum(UsersRoleEnum), nullable=False)
     registration_date = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False)
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
 class Course(db.Model):
     course_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     course_name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.TEXT)
-    instructor_id = db.Column(db.Integer, db.ForeignKey('instructor.instructor_id'))
+    instructor_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
     creation_date = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False)
-    instructor = relationship('Instructor', back_populates='courses')
+    instructor = relationship('User', back_populates='courses')
 
 class Lesson(db.Model):
     lesson_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'))
+    course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), nullable=False)
     lesson_name = db.Column(db.String(100), nullable=False)
     content = db.Column(db.TEXT)
     order_index = db.Column(db.Integer)
@@ -49,29 +59,29 @@ class Lesson(db.Model):
 
 class Quiz(db.Model):
     quiz_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    lesson_id = db.Column(db.Integer, db.ForeignKey('lesson.lesson_id'))
+    lesson_id = db.Column(db.Integer, db.ForeignKey('lesson.lesson_id'), nullable=False)
     quiz_name = db.Column(db.String(100), nullable=False)
     creation_date = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False)
 
 class Question(db.Model):
     question_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    quiz_id = db.Column(db.Integer, db.ForeignKey('quiz.quiz_id'))
+    quiz_id = db.Column(db.Integer, db.ForeignKey('quiz.quiz_id'), nullable=False)
     question_text = db.Column(db.TEXT, nullable=False)
     question_type = db.Column(db.Enum(QuestionsQuestionTypeEnum), nullable=False)
     creation_date = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False)
 
 class Option(db.Model):
     option_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    question_id = db.Column(db.Integer, db.ForeignKey('question.question_id'))
+    question_id = db.Column(db.Integer, db.ForeignKey('question.question_id'), nullable=False)
     option_text = db.Column(db.String(255), nullable=False)
     is_correct = db.Column(db.Boolean, nullable=False, default=False)
 
 class UserProgress(db.Model):
     progress_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
-    course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'))
-    lesson_id = db.Column(db.Integer, db.ForeignKey('lesson.lesson_id'))
-    quiz_id = db.Column(db.Integer, db.ForeignKey('quiz.quiz_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), nullable=False)
+    lesson_id = db.Column(db.Integer, db.ForeignKey('lesson.lesson_id'), nullable=False)
+    quiz_id = db.Column(db.Integer, db.ForeignKey('quiz.quiz_id'), nullable=False)
     score = db.Column(db.DECIMAL(5, 2))
     completed = db.Column(db.Boolean, nullable=False, default=False)
     completion_date = db.Column(db.TIMESTAMP)
@@ -84,7 +94,7 @@ def home():
 @app.route('/users', methods=['GET'])
 def get_users():
     users = User.query.all()
-    result = [{'id': user.id, 'username': user.username, 'email': user.email, 'is_admin': user.is_admin} for user in users]
+    result = [{'id': user.user_id, 'username': user.username, 'email': user.email, 'role': user.role.value} for user in users]
     return jsonify(result)
 
 @app.route('/users', methods=['POST'])
@@ -96,11 +106,12 @@ def create_user():
     if not all([username, email, password]):
         return jsonify({'error': 'Username, email, and password are required'}), 400
     try:
-        user = User(username=username, email=email, password=password)
+        user = User(username=username, email=email)
+        user.set_password(password)
         db.session.add(user)
         db.session.commit()
         return jsonify({'message': 'User created successfully'}), 201
-    except IntegrityError:
+    except exc.IntegrityError:
         db.session.rollback()
         return jsonify({'error': 'Email already exists'}), 409
     except Exception as e:
@@ -112,7 +123,7 @@ def get_user(user_id):
     user = User.query.get(user_id)
     if not user:
         return jsonify({'error': 'User not found'}), 404
-    return jsonify({'id': user.id, 'username': user.username, 'email': user.email, 'is_admin': user.is_admin})
+    return jsonify({'id': user.user_id, 'username': user.username, 'email': user.email, 'role': user.role.value})
 
 @app.route('/users/<int:user_id>', methods=['PUT'])
 def update_user(user_id):
@@ -129,7 +140,7 @@ def update_user(user_id):
     try:
         db.session.commit()
         return jsonify({'message': 'User updated successfully'})
-    except IntegrityError:
+    except exc.IntegrityError:
         db.session.rollback()
         return jsonify({'error': 'Email already exists'}), 409
     except Exception as e:
@@ -148,23 +159,23 @@ def delete_user(user_id):
 @app.route('/courses', methods=['GET'])
 def get_courses():
     courses = Course.query.all()
-    result = [{'id': course.id, 'title': course.title, 'description': course.description, 'instructor_id': course.instructor_id} for course in courses]
+    result = [{'id': course.course_id, 'name': course.course_name, 'description': course.description, 'instructor_id': course.instructor_id} for course in courses]
     return jsonify(result)
 
 @app.route('/courses', methods=['POST'])
 def create_course():
     data = request.json
-    title = data.get('title')
+    name = data.get('course_name')
     description = data.get('description')
     instructor_id = data.get('instructor_id')
-    if not all([title, instructor_id]):
-        return jsonify({'error': 'Title and instructor ID are required'}), 400
+    if not all([name, instructor_id]):
+        return jsonify({'error': 'Course name and instructor ID are required'}), 400
     try:
-        course = Course(title=title, description=description, instructor_id=instructor_id)
+        course = Course(course_name=name, description=description, instructor_id=instructor_id)
         db.session.add(course)
         db.session.commit()
         return jsonify({'message': 'Course created successfully'}), 201
-    except IntegrityError:
+    except exc.IntegrityError:
         db.session.rollback()
         return jsonify({'error': 'Instructor not found'}), 404
     except Exception as e:
@@ -201,7 +212,8 @@ def register_user():
         return jsonify({'error': 'Email already exists'}), 409
 
     # Create new user
-    user = User(username=username, password=password, email=email)
+    user = User(username=username, email=email)
+    user.set_password(password)
     db.session.add(user)
     db.session.commit()
     return jsonify({'message': 'User registered successfully'}), 201
@@ -218,18 +230,14 @@ def login_user():
 
     # Check if user exists
     user = User.query.filter_by(username=username).first()
-    if not user:
-        return jsonify({'error': 'Invalid username or password'}), 401
-
-    # Check password
-    if not user.check_password(password):
+    if not user or not user.check_password(password):
         return jsonify({'error': 'Invalid username or password'}), 401
 
     # Create JWT token
     token = jwt.encode({'username': username, 'exp': datetime.utcnow() + timedelta(days=1)}, app.config['SECRET_KEY'])
 
-    return jsonify({'token': token.decode('UTF-8')}), 200
-    
+    return jsonify({'token': token}), 200
+
 # Error Handlers
 @app.errorhandler(404)
 def not_found_error(error):
