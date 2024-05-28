@@ -86,6 +86,11 @@ class UserProgress(db.Model):
     completed = db.Column(db.Boolean, nullable=False, default=False)
     completion_date = db.Column(db.TIMESTAMP)
 
+class TokenBlacklist(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    jti = db.Column(db.String(36), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+
 # Routes
 @app.route('/')
 def home():
@@ -237,6 +242,41 @@ def login_user():
     token = jwt.encode({'username': username, 'exp': datetime.utcnow() + timedelta(days=1)}, app.config['SECRET_KEY'])
 
     return jsonify({'token': token}), 200
+
+@app.route('/logout', methods=['POST'])
+def logout_user():
+    auth_header = request.headers.get('Authorization')
+    if auth_header:
+        token = auth_header.split(" ")[1]
+    else:
+        return jsonify({'error': 'Token is missing'}), 401
+
+    try:
+        decoded_token = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+        jti = decoded_token['jti']
+        blacklist_entry = TokenBlacklist(jti=jti)
+        db.session.add(blacklist_entry)
+        db.session.commit()
+        return jsonify({'message': 'Successfully logged out'}), 200
+    except jwt.ExpiredSignatureError:
+        return jsonify({'error': 'Token has expired'}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({'error': 'Invalid token'}), 401
+
+@app.before_request
+def check_blacklist():
+    auth_header = request.headers.get('Authorization')
+    if auth_header:
+        token = auth_header.split(" ")[1]
+        try:
+            decoded_token = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+            jti = decoded_token['jti']
+            if TokenBlacklist.query.filter_by(jti=jti).first():
+                return jsonify({'error': 'Token has been revoked'}), 401
+        except jwt.ExpiredSignatureError:
+            return jsonify({'error': 'Token has expired'}), 401
+        except jwt.InvalidTokenError:
+            return jsonify({'error': 'Invalid token'}), 401
 
 # Error Handlers
 @app.errorhandler(404)
