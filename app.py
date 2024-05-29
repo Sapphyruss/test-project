@@ -187,6 +187,46 @@ def create_course():
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
 
+@app.route('/courses/<int:course_id>', methods=['GET'])
+def get_course(course_id):
+    course = Course.query.get(course_id)
+    if not course:
+        return jsonify({'error': 'Course not found'}), 404
+    return jsonify({'id': course.course_id, 'name': course.course_name, 'description': course.description, 'instructor_id': course.instructor_id})
+
+@app.route('/courses/<int:course_id>', methods=['PUT'])
+def update_course(course_id):
+    course = Course.query.get(course_id)
+    if not course:
+        return jsonify({'error': 'Course not found'}), 404
+    data = request.json
+    course_name = data.get('course_name')
+    description = data.get('description')
+    instructor_id = data.get('instructor_id')
+    if not all([course_name, instructor_id]):
+        return jsonify({'error': 'Course name and instructor ID are required'}), 400
+    course.course_name = course_name
+    course.description = description
+    course.instructor_id = instructor_id
+    try:
+        db.session.commit()
+        return jsonify({'message': 'Course updated successfully'})
+    except exc.IntegrityError:
+        db.session.rollback()
+        return jsonify({'error': 'Instructor not found'}), 404
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/courses/<int:course_id>', methods=['DELETE'])
+def delete_course(course_id):
+    course = Course.query.get(course_id)
+    if not course:
+        return jsonify({'error': 'Course not found'}), 404
+    db.session.delete(course)
+    db.session.commit()
+    return jsonify({'message': 'Course deleted successfully'})
+
 @app.route('/test_db_connection', methods=['GET'])
 def test_db_connection():
     try:
