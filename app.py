@@ -227,6 +227,174 @@ def delete_course(course_id):
     db.session.commit()
     return jsonify({'message': 'Course deleted successfully'})
 
+# Quizz routes
+@app.route('/quizzes', methods=['GET']) 
+def get_quizzes(): 
+    quizzes = Quiz.query.all() 
+    result = [{'id': quiz.quiz_id, 'name': quiz.quiz_name, 'lesson_id': quiz.lesson_id} for quiz in quizzes] 
+    return jsonify(result) 
+
+@app.route('/quizzes', methods=['POST'])
+def create_quiz():
+    data = request.json
+    quiz_name = data.get('quiz_name')
+    lesson_id = data.get('lesson_id')
+    if not all([quiz_name, lesson_id]):
+        return jsonify({'error': 'Quiz name and lesson ID are required'}), 400
+    quiz = Quiz(quiz_name=quiz_name, lesson_id=lesson_id)
+    db.session.add(quiz)
+    db.session.commit()
+    return jsonify({'message': 'Quiz created successfully'}), 201
+
+@app.route('/quizzes/<int:quiz_id>', methods=['GET']) 
+def get_quiz(quiz_id): 
+    quiz = Quiz.query.get(quiz_id) 
+    if not quiz: 
+        return jsonify({'error': 'Quiz not found'}), 404 
+    return jsonify({'id': quiz.quiz_id, 'name': quiz.quiz_name, 'lesson_id': quiz.lesson_id}) 
+
+@app.route('/quizzes/<int:quiz_id>', methods=['PUT']) 
+def update_quiz(quiz_id): 
+    quiz = Quiz.query.get(quiz_id) 
+    if not quiz: 
+        return jsonify({'error': 'Quiz not found'}), 404 
+    data = request.json 
+    quiz_name = data.get('quiz_name') 
+    lesson_id = data.get('lesson_id') 
+    if not all([quiz_name, lesson_id]):
+        return jsonify({'error': 'Quiz name and lesson ID are required'}), 400 
+    quiz.quiz_name = quiz_name 
+    quiz.lesson_id = lesson_id 
+    db.session.commit() 
+    return jsonify({'message': 'Quiz updated successfully'}) 
+
+@app.route('/quizzes/<int:quiz_id>', methods=['DELETE']) 
+def delete_quiz(quiz_id): 
+    quiz = Quiz.query.get(quiz_id) 
+    if not quiz: 
+        return jsonify({'error': 'Quiz not found'}), 404 
+    db.session.delete(quiz) 
+    db.session.commit() 
+    return jsonify({'message': 'Quiz deleted successfully'}) 
+
+# Questions
+@app.route('/questions', methods=['GET']) 
+def get_questions(): 
+    questions = Question.query.all() 
+    result = [{'id': question.question_id, 'text': question.question_text, 'type': question.question_type.value, 'quiz_id': question.quiz_id} for question in questions] 
+    return jsonify(result) 
+
+@app.route('/questions', methods=['POST'])
+def create_question():
+    data = request.json
+    question_text = data.get('question_text')
+    question_type = data.get('question_type')
+    quiz_id = data.get('quiz_id')
+    if not all([question_text, question_type, quiz_id]):
+        return jsonify({'error': 'Question text, question type, and quiz ID are required'}), 400
+    question = Question(question_text=question_text, question_type=question_type, quiz_id=quiz_id)
+    db.session.add(question)
+    db.session.commit()
+    return jsonify({'message': 'Question created successfully'}), 201
+
+@app.route('/questions/<int:question_id>', methods=['GET']) 
+def get_question(question_id): 
+    question = Question.query.get(question_id) 
+    if not question: 
+        return jsonify({'error': 'Question not found'}), 404 
+    return jsonify({'id': question.question_id, 'text': question.question_text, 'type': question.question_type.value, 'quiz_id': question.quiz_id}) 
+
+@app.route('/questions/<int:question_id>', methods=['PUT']) 
+def update_question(question_id):
+    question = Question.query.get(question_id) 
+    if not question: 
+        return jsonify({'error': 'Question not found'}), 404 
+    data = request.json 
+    question_text = data.get('question_text') 
+    question_type = data.get('question_type') 
+    quiz_id = data.get('quiz_id') 
+    if not all([question_text, question_type, quiz_id]): 
+        return jsonify({'error': 'Question text, question type, and quiz ID are required'}), 400 
+    question.question_text = question_text 
+    question.question_type = question_type 
+    question.quiz_id = quiz_id
+    db.session.commit() 
+    return jsonify({'message': 'Question updated successfully'}) 
+
+@app.route('/questions/<int:question_id>', methods=['DELETE']) 
+def delete_question(question_id): 
+    question = Question.query.get(question_id) 
+    if not question: 
+        return jsonify({'error': 'Question not found'}), 404 
+    db.session.delete(question) 
+    db.session.commit() 
+    return jsonify({'message': 'Question deleted successfully'}) 
+
+# User Progress 
+@app.route('/progress', methods=['GET']) 
+def get_progress(): 
+    progress = UserProgress.query.all() 
+    result = [{'id': p.progress_id, 'user_id': p.user_id, 'course_id': p.course_id, 'lesson_id': p.lesson_id, 'quiz_id': p.quiz_id, 'score': p.score, 'completed': p.completed, 'completion_date': p.completion_date} for p in progress] 
+    return jsonify(result) 
+
+@app.route('/progress', methods=['POST']) 
+def create_progress(): 
+    data = request.json 
+    user_id = data.get('user_id') 
+    course_id = data.get('course_id') 
+    lesson_id = data.get('lesson_id') 
+    quiz_id = data.get('quiz_id') 
+    score = data.get('score') 
+    completed = data.get('completed')
+    completion_date = data.get('completion_date')
+    if not all([user_id, course_id]): 
+        return jsonify({'error': 'User ID and Course ID are required'}), 400 
+    progress = UserProgress(user_id=user_id, course_id=course_id, lesson_id=lesson_id, quiz_id=quiz_id, score=score, completed=completed, completion_date=completion_date) 
+    db.session.add(progress) 
+    db.session.commit() 
+    return jsonify({'message': 'Progress created successfully'}), 201 
+
+@app.route('/progress/<int:progress_id>', methods=['GET']) 
+def get_single_progress(progress_id): 
+    progress = UserProgress.query.get(progress_id) 
+    if not progress: 
+        return jsonify({'error': 'Progress not found'}), 404 
+    return jsonify({'id': progress.progress_id, 'user_id': progress.user_id, 'course_id': progress.course_id, 'lesson_id': progress.lesson_id, 'quiz_id': progress.quiz_id, 'score': progress.score, 'completed': progress.completed, 'completion_date': progress.completion_date}) 
+
+@app.route('/progress/<int:progress_id>', methods=['PUT']) 
+def update_progress(progress_id): 
+    progress = UserProgress.query.get(progress_id) 
+    if not progress: 
+        return jsonify({'error': 'Progress not found'}), 404 
+    data = request.json 
+    user_id = data.get('user_id') 
+    course_id = data.get('course_id') 
+    lesson_id = data.get('lesson_id') 
+    quiz_id = data.get('quiz_id') 
+    score = data.get('score') 
+    completed = data.get('completed')
+    completion_date = data.get('completion_date') 
+    if not all([user_id, course_id]): 
+        return jsonify({'error': 'User ID and Course ID are required'}), 400 
+    progress.user_id = user_id 
+    progress.course_id = course_id 
+    progress.lesson_id = lesson_id 
+    progress.quiz_id = quiz_id 
+    progress.score = score 
+    progress.completed = completed 
+    progress.completion_date = completion_date 
+    db.session.commit() 
+    return jsonify({'message': 'Progress updated successfully'})
+
+@app.route('/progress/<int:progress_id>', methods=['DELETE']) 
+def delete_progress(progress_id): 
+    progress = UserProgress.query.get(progress_id) 
+    if not progress: 
+        return jsonify({'error': 'Progress not found'}), 404 
+    db.session.delete(progress) 
+    db.session.commit() 
+    return jsonify({'message': 'Progress deleted successfully'}) 
+
 @app.route('/test_db_connection', methods=['GET'])
 def test_db_connection():
     try:
