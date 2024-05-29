@@ -227,6 +227,20 @@ def delete_course(course_id):
     db.session.commit()
     return jsonify({'message': 'Course deleted successfully'})
 
+# Lesson
+@app.route('/lessons', methods=['POST'])
+def create_lesson():
+    data = request.json
+    lesson_name = data.get('lesson_name')
+    content = data.get('content')
+    course_id = data.get('course_id')
+    if not all([lesson_name, course_id]):
+        return jsonify({'error': 'Lesson name and course ID are required'}), 400
+    lesson = Lesson(lesson_name=lesson_name, content=content, course_id=course_id)
+    db.session.add(lesson)
+    db.session.commit()
+    return jsonify({'message': 'Lesson created successfully'}), 201
+
 # Quizz routes
 @app.route('/quizzes', methods=['GET']) 
 def get_quizzes(): 
